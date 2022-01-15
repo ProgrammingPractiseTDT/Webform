@@ -1,0 +1,75 @@
+﻿@model Webform.Models.ProductWithImageViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<script>
+
+    function addToCart(){
+        var quantity = document.getElementById("item-quantity").value
+        var ID = @Model.product.ID
+        window.location.href = '/Cart/AddItem/?ProductID='+ID+'&Quantity='+quantity
+       
+
+    }
+</script>
+
+@*$('add-to-cart').click(function(){ winodw.location.href = '@Url.Action("AddItem","Cart",new{parameter ProductID= value})'; });*@
+
+
+<h1>@Model.product.Name</h1>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <img class ="product-image" src = "@Model.ImageSrc"/>
+    <dl class="row">
+        
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.product.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.product.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.product.Brand)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.product.Brand)
+        </dd>
+        <dt class = "col-sm-2">
+            Price
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.product.DeliveryPrice)
+        </dd>
+        
+    </dl>
+</div>
+
+<div class="row justify-content-md-center">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                Add to cart
+            </div>
+            <div class="card-body">
+                    <div class="form-group">
+                        <label class="control-label">Quantity</label>
+                        <input type="number" id="item-quantity" min= "1" value="1"/> 
+                    </div>
+     
+    
+            </div>
+            <button  type="button" class="btn btn-primary" id = "add-to-cart"  onclick="addToCart()">Add to Cart</button>
+                    
+        </div>
+    </div>
+</div>
+
+
+<div>
+
+    <a asp-action="Index">Back to List</a>
+</div>

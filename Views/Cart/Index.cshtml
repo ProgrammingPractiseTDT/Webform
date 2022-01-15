@@ -1,0 +1,113 @@
+﻿@model IEnumerable<Webform.Models.ProductInCartViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    double total = 0;
+    foreach(var item in Model)
+    {
+        total += item.Cost;
+    }
+
+    var CartID = "";
+    if (Model.Count() >0)
+    {
+        CartID = Model.First().CartID.ToString();
+    }
+}
+
+<h1>Products selected</h1>
+<script>
+    function order(){
+        
+        var cartID = @CartID;
+        var ShipAdress = document.getElementById("ship-address").value
+       window.location.href = '/DeliverySlips/Create/?CartID='+cartID+'&ShipAdress='+ShipAdress+'&Payment=true';
+       
+    }
+</script>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                <label>Product names</label>
+            </th>
+           
+            <th>
+                <label>Quantity</label>
+            </th>
+
+            <th>
+                <label>Cost</label>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <img class ="product-image" src = "@item.ImageSrc"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CartProduct.Brand) @Html.DisplayFor(modelItem => item.CartProduct.Name)  
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.CartItem.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost) $
+            </td>
+            <td>
+                <a asp-action="DeleteConfirmed" asp-controller ="ItemInCarts" asp-route-id="@item.CartItem.ID" >Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div id = "payment-container" class = "row">
+    
+</div>
+<script>
+    var showPayment = @Model.Count()
+    console.log(showPayment)
+    if(showPayment != '0'){
+
+        var div = document.getElementById("payment-container")
+        div.innerHTML = `<div class = "column">
+        <div style="text-align: center">
+            <h3>Total:</h3>
+            <h4 id = "total">@total $</h4>
+        </div>
+    </div>
+
+    <div class = "column">
+
+
+           <div style="text-align: center">
+            <label>Shipping Address:</label>
+            <div>
+             <input type = "text" id ="ship-address"/>
+            </div>
+            <p>Payment type: </p>
+            <div class="cc-selector">
+                <input id="visa" type="radio" name="credit-card" value="visa" />
+                <label class="drinkcard-cc visa" for="visa"></label>
+                <input id="mastercard" type="radio" name="credit-card" value="mastercard" />
+                <label class="drinkcard-cc mastercard"for="mastercard"></label>
+            </div>
+          <button type="button" class="btn btn-primary" onclick="order()" >Order</button>
+
+    </div>
+    
+</div>`
+    }
+</script>
+
+
+
+
+ 

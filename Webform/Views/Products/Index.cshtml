@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Webform.Models.ProductWithImageViewModel>
+@*<a asp-page="/Products">About</a>*@
+@{
+    ViewData["Title"] = "Index";
+}
+<script>
+    function viewProduct(id){
+        window.location.href = '/Products/Details/?id='+id
+    }
+</script>
+<div class="text-center">
+    <h1 class="display-4">Find your best product</h1>
+    <p>High quality and excellent price</a>.</p>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+              
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.product.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.product.Brand)
+            </th>
+            <th>
+                <label>Price</label>
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class = "product-row" onclick = "viewProduct(@item.product.ID)"> 
+            <td>
+                <img class ="product-image" src = "@item.ImageSrc"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.product.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.product.Brand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.product.DeliveryPrice)
+            </td>
+            
+            <td>
+                <a asp-action="Details" asp-route-id="@item.product.ID">Buy</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
